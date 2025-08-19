@@ -194,6 +194,7 @@ class GenerateCommand extends Command
     private function writeControllerMethodExport(Route $route, string $path): void
     {
         $this->appendContent($path, $this->view->make('wayfinder::method', [
+            'name' => $route->name(),
             'controller' => $route->controller(),
             'method' => $route->jsMethod(),
             'original_method' => $route->originalJsMethod(),
@@ -245,6 +246,7 @@ class GenerateCommand extends Command
     private function writeNamedMethodExport(Route $route, string $path): void
     {
         $this->appendContent($path, $this->view->make('wayfinder::method', [
+            'name' => $route->name(),
             'controller' => $route->controller(),
             'method' => $route->namedMethod(),
             'original_method' => $route->originalJsMethod(),
@@ -282,7 +284,7 @@ class GenerateCommand extends Command
         } else {
             $keysWithGrandkids = $children->filter(fn ($grandChildren) => ! array_is_list(collect($grandChildren)->all()));
             $imports = $childKeys->only($keysWithGrandkids->keys())->map(fn ($alias, $key) => "import {$alias['safe']} from './{$key}'")->implode(PHP_EOL);
-        }
+        } 
 
         if ($imports) {
             $this->prependContent($indexPath, $imports);
